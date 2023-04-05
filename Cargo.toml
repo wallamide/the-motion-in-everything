@@ -1,20 +1,26 @@
 [package]
-authors = ["Jan Hohenheim <jan@hohenheim.ch>"]
+authors = ["Wallamide <wallamide@gmail.com>, Jan Hohenheim <jan@hohenheim.ch>"]
 edition = "2021"
 name = "foxtrot"
 version = "0.2.0"
 license = "MIT OR  Apache-2.0"
-exclude = ["dist", "build", "assets", "credits", "saves", "resources", "build.rs"]
+exclude = [
+    "dist",
+    "build",
+    "assets",
+    "credits",
+    "saves",
+    "resources",
+    "build.rs",
+]
 description = "The all-in-one Bevy 3D game template."
-repository = "https://github.com/janhohenheim/foxtrot"
+repository = "https://github.com/wallamide/wetland-protection-game"
 keywords = ["gamedev", "bevy", "template", "game"]
-categories = ["game-development"]
-homepage = "https://janhohenheim.github.io/foxtrot/"
+categories = ["game-development, game jam game"]
+homepage = "https://wallamide.github.io/wetland-protection-game/"
 
 [features]
-default = [
-    "native-dev",
-]
+default = ["native-dev"]
 
 core = [
     "bevy/animation",
@@ -38,44 +44,22 @@ core = [
     "bevy/serialize",
 ]
 
-dev = [
-    "dep:bevy_editor_pls",
-    "dep:bevy_prototype_debug_lines",
-    "core"
-]
+dev = ["dep:bevy_editor_pls", "dep:bevy_prototype_debug_lines", "core"]
 
-native-dev = [
-    "bevy/bevy_dylib",
-    "bevy/filesystem_watcher",
-    "dev",
-    "native"
-]
+native-dev = ["bevy/bevy_dylib", "bevy/filesystem_watcher", "dev", "native"]
 
-native = [
-    "bevy_rapier3d/parallel",
-    "dep:bevy_hanabi",
-    "core"
-]
+native = ["bevy_rapier3d/parallel", "dep:bevy_hanabi", "core"]
 
-wasm = [
-    "bevy_rapier3d/wasm-bindgen",
-    "core",
-    "dep:wasm-bindgen",
-]
+wasm = ["bevy_rapier3d/wasm-bindgen", "core", "dep:wasm-bindgen"]
 
-wasm_dev = [
-    "wasm",
-    "dev"
-]
+wasm_dev = ["wasm", "dev"]
 
-tracing = [
-    "bevy/trace_chrome"
-]
+tracing = ["bevy/trace_chrome"]
 
 [dependencies]
 bevy = { version = "0.10", default-features = false }
 bevy_kira_audio = "0.15"
-bevy_asset_loader = { version = "0.15", features = ["progress_tracking"] }
+bevy_asset_loader = { version = "0.16", features = ["progress_tracking"] }
 bevy_common_assets = { version = "0.6", features = ["ron", "toml"] }
 bevy_egui = "0.20"
 serde = { version = "1", features = ["derive"] }
@@ -92,10 +76,15 @@ iyes_progress = "0.8"
 unicode-segmentation = "1"
 bevy_hanabi = { version = "0.6", optional = true }
 anyhow = "1"
-bevy_rapier3d = { version = "0.21", features = ["serde-serialize", "simd-nightly"] }
-leafwing-input-manager = { version = "0.9", features = [ "egui" ] }
-bevy_editor_pls = { version = "0.3", optional = true}
-bevy_prototype_debug_lines = { version = "0.10", optional = true, features = ["3d"] }
+bevy_rapier3d = { version = "0.21", features = [
+    "serde-serialize",
+    "simd-nightly",
+] }
+leafwing-input-manager = { version = "0.9", features = ["egui"] }
+bevy_editor_pls = { version = "0.3", optional = true }
+bevy_prototype_debug_lines = { version = "0.10", optional = true, features = [
+    "3d",
+] }
 wasm-bindgen = { version = "0.2", optional = true }
 warbler_grass = "0.3"
 rand = { version = "0.8", features = ["small_rng", "nightly"] }

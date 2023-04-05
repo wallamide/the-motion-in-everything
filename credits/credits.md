@@ -6,6 +6,7 @@
 - Fox walking sound: CC0 1.0; https://freesound.org/people/IENBA/sounds/658429/
 - Fox model: CC0 1.0; https://opengameart.org/content/fox-and-shiba
 - Fox rig and animations: CC BY 4.0, made by Tom Kranis; https://sketchfab.com/3d-models/low-poly-fox-by-pixelmannen-animated-371dea88d7e04a76af5763f2a36866bc
+- Sky from Kloppenheim 02 (Pure Sky): CC0 https://polyhaven.com/a/kloppenheim_02_puresky
 - Stone Alley 02: CC0 1.0; https://polyhaven.com/a/stone_alley_02
 - Forest Leaves 02: CC0 1.0; https://polyhaven.com/a/forest_leaves_02
 - 3D Retro Medieval/Fantasy Building Kit: CC0 1.0; https://chilly-durango.itch.io/medieval-building-parts

@@ -12,26 +12,26 @@
     ],
     pages: {
         "page:main-choice": (
-            text: "A giant fox stands before you. The light shimmers on its fur.\n\"What is your will?\"",
+            text: "A giant fox stands before you. The light shimmers on their fur.\n\"Hey, whats up?\"",
             next_page: Choice({
                 "choice:who": (
                     text: "\"Who are you?\"",
                     next_page_id: "page:me",
                 ),
-                "choice:possibilities": (
-                    text: "\"Tell me about the possibilities this world offers.\"",
-                    next_page_id: "page:possibilities",
+                "choice:localThings": (
+                    text: "\"Have you noticed anything happening recently?\"",
+                    next_page_id: "page:localThings",
                 ),
-                "choice:commands": (
-                    text: "\"I command you to do something for me.\"",
-                    next_page_id: "page:commands",
+                "choice:assistance": (
+                    text: "\"I need your help with something.\"",
+                    next_page_id: "page:assistance",
                 ),
                 "choice:exhaust": (
                     text: "\"Did we talk about everything?\"",
                     next_page_id: "page:exhaust",
                     positive_requirements: [
                         "choice:who",
-                        "choice:possibilities",
+                        "choice:localThings",
                         "choice:commands",
                     ],
                 ),
@@ -42,93 +42,83 @@
             }),
         ),
         "page:again": (
-            text: "\"Greetings, master. Do you wish some further testing?\"",
+            text: "\"Hello again!, Do you need anything else?\"",
             next_page: SameAs("page:greet"),
         ),
         "page:me": (
-            text: "\"I am a testing character.\nMy sole purpose is to fill the air with diverse, but ultimately meaningless conversation.\nYou are my master; I am your servant\"",
+            text: "\"I am Alair, Ive been looking after this part of the wetlands for a little while now."\n\"Is there anything else you need?\"",
             next_page: SameAs("page:main-choice"),
         ),
         "page:exhaust": (
-            text: "\"I have exhausted my repertoire. We can only treat old ground now.\"",
-            next_page: SameAs("page:main-choice"),
+            text: "\"I dont have anything else for you at the moment. Good luck in your travels.\"",
+            next_page: Exit,
         ),
         "page:greet": (
-            text: "\"Greetings, master.\"",
-            next_page: Continue("page:main-choice"),
-        ),
+            text: "\"Hello, hope youre well. Its good to see another fox joining us. What can i help you with?\"",
+            next_page: SameAs("page:main-choice"),
+        )
         "page:exit": (
-            text: "\"Goodbye.\"\nThe fox's gaze shifts ever so slightly. It now looks just past you into the void.",
-            talking_speed: 2.,
+            text: "\"It's been nice takling with you! See you soon.\"",
             next_page: Exit,
         ),
         "page:main-choice-unnest": (
-            text: "\"May you use this knowledge to live more\"",
+            text: "\"What else can i help you with?\"",
             next_page: SameAs("page:main-choice"),
         ),
-        "page:possibilities": (
-            text: "The fox perches its ears. \"Certainly, master. What do you wish to learn about?\"",
+        "page:localThings": (
+            text: "*They think for a moment* \"Theres been a lot of liter problems since the racoons stopped coming around...\"",
             next_page: Choice({
-                "choice:movement": (
-                    text: "\"What can my body do?\"",
-                    next_page_id: "page:movement",
+                "choice:local-helper": (
+                    text: "\"What can i do to help?\"",
+                    next_page_id: "page:help-out",
                 ),
-                "choice:camera": (
-                    text: "\"Can I change the way I view the world?\"",
-                    next_page_id: "page:camera",
-                ),
-                "choice:editor": (
-                    text: "\"Can I change the structure of this world?\"",
-                    next_page_id: "page:editor",
+                "choice:other-things": (
+                    text: "\"Is there anything else you may need help with? I'm not feeling the whole... trash thing.\"",
+                    next_page: "page:other-things"
                 ),
                 "choice:unnest": (
-                    text: "\"Enough. Let us talk about different things.\"",
-                    next_page_id: "page:main-choice-unnest",
+                    text: "\"I think i need something else...\"",
+                    next_page_id: "page:main-choice-unnest"
                 ),
             }),
         ),
-        "page:movement": (
-            text: "\"You can move your limbs with WASD. Holding shift will shiften your pace. Pressing space will free you from gravity's shackles, if only for a moment.\"",
-            next_page: SameAs("page:possibilities")
+        "page:help-out": (
+            text: "\"I know the raccoons have been trying to get in the trash cans to start moving most of the waste out for our compost heap. You could go take a look and get back to me or go look for Torvel, my friend that helps out the raccoons, and see what they've been thinking about for this.\"",
+            next_page: SameAs("page:localThings")
         ),
-        "page:camera": (
-            text: "\"Scrolling moves your mind's eye across vast distances. Go far, and you shall see the world as a bird does. Go near and the bonds between your body and vision will vanish.\"",
-            next_page: SameAs("page:possibilities")
+        "page:other-things": (
+            text: "\"You could go chat with one of my friends to see if there was any non-trash ways to help them out, but at the moment, there isn't much else happening... At least nothing i'd trust an outsider with.\"",
+            next_page: SameAs("page:main-choice-unnest")
         ),
         "page:editor": (
             text: "\"That depends. If you entered this world as a developer, press Q to gaze into the beating heart of the world. In any case, Esc will pause the flow of time and free your mouse.\"",
-            next_page: SameAs("page:possibilities")
+            next_page: SameAs("page:localThings")
         ),
-       "page:commands": (
-            text: "The fox stiffs its back. \"Yes, master. Where your will goes I shall follow.\"",
+       "page:assistance": (
+            text: "*They nod slowly and smile* \"Id be glad to help out.\"",
+            positive_requirements: ["choice:help-out"]
             next_page: Choice({
-                "choice:slow": (
-                    text: "\"Talk slowly to me\"",
-                    next_page_id: "page:slow",
+                "choice:where-again": (
+                    text: "\" Could you tell me where to go again?\"",
+                    next_page_id: "page:where-again",
                 ),
-                "choice:fast": (
-                    text: "\"Talk fast to me\"",
-                    next_page_id: "page:fast",
+                "choice:follow-me": (
+                    text: "\"Care to join me for a bit?\"",
+                    next_page_id: "page:follow-me",
                 ),
-                "choice:commands-back": (
-                    text: "\"You may relax again. Let us talk about different things.\"",
-                    next_page_id: "page:commands-back",
+                "choice:back-to-main": (
+                    text: "\"Thanks for the help!\"",
+                    next_page: SameAs("page:main-choice"),
                 ),
             }),
         ),
-        "page:slow": (
-            text: "\"My... mind... as... slow... as...  ...\"",
-            talking_speed: 0.1,
-            next_page: SameAs("page:commands")
+        "page:where-again": (
+            text: "\"Try finding the raccoons near the welcome center or looking at the trash cans in the area yourself.\"",
+            next_page: SameAs("page:assistance")
         ),
-        "page:fast": (
-            text: "\"Yes, master! My thoughts race as though I was running from death itself. I shall serve you as you want, master. I am nothing the moment you are done with me, master. My existence ceases upon the push of a button, master.\"",
-            talking_speed: 3.,
-            next_page: SameAs("page:commands")
-        ),
-        "page:commands-back": (
-            text: "The fox looks visibly more calm, although there is still a shadow of exhaustion in its face. \"Thank you, master.\"",
-            next_page: SameAs("page:main-choice"),
+        "page:follow-me": (
+            text: "\"Sure thing!\"",
+            next_page: Exit
         ),
     },
 )
