@@ -1,7 +1,7 @@
 [package]
-authors = ["Wallamide <wallamide@gmail.com>, Jan Hohenheim <jan@hohenheim.ch>"]
+authors = ["Lyla <wallamide@gmail.com>, Jan Hohenheim <jan@hohenheim.ch>"]
 edition = "2021"
-name = "foxtrot"
+name = "the-motion-in-everything"
 version = "0.2.0"
 license = "MIT OR  Apache-2.0"
 exclude = [
@@ -13,11 +13,11 @@ exclude = [
     "resources",
     "build.rs",
 ]
-description = "The all-in-one Bevy 3D game template."
-repository = "https://github.com/wallamide/wetland-protection-game"
+description = "use magic made from the earth as you learn how to move the motion in everything."
+repository = "https://github.com/wallamide/the-motion-in-everything/"
 keywords = ["gamedev", "bevy", "template", "game"]
 categories = ["game-development, game jam game"]
-homepage = "https://wallamide.github.io/wetland-protection-game/"
+homepage = "https://wallamide.github.io/the-motion-in-everything/"
 
 [features]
 default = ["native-dev"]

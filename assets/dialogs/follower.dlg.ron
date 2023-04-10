@@ -36,7 +36,7 @@
                     ],
                 ),
                 "choice:bye": (
-                    text: "\"You may go now.\"",
+                    text: "\"That's all for now, thanks.\"",
                     next_page_id: "page:exit",
                 ),
             }),
@@ -46,7 +46,7 @@
             next_page: SameAs("page:greet"),
         ),
         "page:me": (
-            text: "\"I am Alair, Ive been looking after this part of the wetlands for a little while now."\n\"Is there anything else you need?\"",
+            text: "\"I am Alair, Ive been looking after this part of the wetlands for a little while now.\nIs there anything else you need?\"",
             next_page: SameAs("page:main-choice"),
         ),
         "page:exhaust": (
@@ -54,11 +54,11 @@
             next_page: Exit,
         ),
         "page:greet": (
-            text: "\"Hello, hope youre well. Its good to see another fox joining us. What can i help you with?\"",
+            text: "\"Hello, hope you're well. It's good to see another fox joining us. What can i help you with?\"",
             next_page: SameAs("page:main-choice"),
-        )
+        ),
         "page:exit": (
-            text: "\"It's been nice takling with you! See you soon.\"",
+            text: "\"It's been nice talking with you! See you soon.\"",
             next_page: Exit,
         ),
         "page:main-choice-unnest": (
@@ -66,7 +66,7 @@
             next_page: SameAs("page:main-choice"),
         ),
         "page:localThings": (
-            text: "*They think for a moment* \"Theres been a lot of liter problems since the racoons stopped coming around...\"",
+            text: "*They think for a moment* \"Theres been a lot of litter problems since the racoons stopped coming around...\"",
             next_page: Choice({
                 "choice:local-helper": (
                     text: "\"What can i do to help?\"",
@@ -74,29 +74,25 @@
                 ),
                 "choice:other-things": (
                     text: "\"Is there anything else you may need help with? I'm not feeling the whole... trash thing.\"",
-                    next_page: "page:other-things"
+                    next_page_id: "page:other-things",
                 ),
                 "choice:unnest": (
                     text: "\"I think i need something else...\"",
-                    next_page_id: "page:main-choice-unnest"
+                    next_page_id: "page:main-choice-unnest",
                 ),
             }),
         ),
         "page:help-out": (
             text: "\"I know the raccoons have been trying to get in the trash cans to start moving most of the waste out for our compost heap. You could go take a look and get back to me or go look for Torvel, my friend that helps out the raccoons, and see what they've been thinking about for this.\"",
-            next_page: SameAs("page:localThings")
+            next_page: SameAs("page:localThings"),
         ),
         "page:other-things": (
             text: "\"You could go chat with one of my friends to see if there was any non-trash ways to help them out, but at the moment, there isn't much else happening... At least nothing i'd trust an outsider with.\"",
-            next_page: SameAs("page:main-choice-unnest")
-        ),
-        "page:editor": (
-            text: "\"That depends. If you entered this world as a developer, press Q to gaze into the beating heart of the world. In any case, Esc will pause the flow of time and free your mouse.\"",
-            next_page: SameAs("page:localThings")
+            next_page: SameAs("page:main-choice-unnest"),
         ),
        "page:assistance": (
-            text: "*They nod slowly and smile* \"Id be glad to help out.\"",
-            positive_requirements: ["choice:help-out"]
+            text: "\"*They nod slowly and smile* \"I'd be glad to help out.\"",
+            positive_requirements: ["choice:help-out"],
             next_page: Choice({
                 "choice:where-again": (
                     text: "\" Could you tell me where to go again?\"",
@@ -108,17 +104,17 @@
                 ),
                 "choice:back-to-main": (
                     text: "\"Thanks for the help!\"",
-                    next_page: SameAs("page:main-choice"),
+                    next_page_id: "page:main-choice",
                 ),
             }),
         ),
         "page:where-again": (
             text: "\"Try finding the raccoons near the welcome center or looking at the trash cans in the area yourself.\"",
-            next_page: SameAs("page:assistance")
+            next_page: SameAs("page:assistance"),
         ),
         "page:follow-me": (
             text: "\"Sure thing!\"",
-            next_page: Exit
+            next_page: Exit,
         ),
     },
 )

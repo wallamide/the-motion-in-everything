@@ -2027,45 +2027,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "foxtrot"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "bevy",
- "bevy_asset_loader",
- "bevy_common_assets",
- "bevy_dolly",
- "bevy_editor_pls",
- "bevy_egui",
- "bevy_hanabi",
- "bevy_kira_audio",
- "bevy_mod_sysfail",
- "bevy_prototype_debug_lines",
- "bevy_rapier3d",
- "bitflags 2.0.2",
- "chrono",
- "embed-resource",
- "glob",
- "image",
- "indexmap",
- "iyes_progress",
- "leafwing-input-manager",
- "oxidized_navigation",
- "rand",
- "regex",
- "ron",
- "seldom_fn_plugin",
- "serde",
- "spew",
- "strum",
- "strum_macros",
- "unicode-segmentation",
- "warbler_grass",
- "wasm-bindgen",
- "winit",
-]
-
-[[package]]
 name = "fsevent-sys"
 version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4042,6 +4003,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be55cf8942feac5c765c2c993422806843c9a9a45d4d5c407ad6dd2ea95eb9b6"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "the-motion-in-everything"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "bevy_asset_loader",
+ "bevy_common_assets",
+ "bevy_dolly",
+ "bevy_editor_pls",
+ "bevy_egui",
+ "bevy_hanabi",
+ "bevy_kira_audio",
+ "bevy_mod_sysfail",
+ "bevy_prototype_debug_lines",
+ "bevy_rapier3d",
+ "bitflags 2.0.2",
+ "chrono",
+ "embed-resource",
+ "glob",
+ "image",
+ "indexmap",
+ "iyes_progress",
+ "leafwing-input-manager",
+ "oxidized_navigation",
+ "rand",
+ "regex",
+ "ron",
+ "seldom_fn_plugin",
+ "serde",
+ "spew",
+ "strum",
+ "strum_macros",
+ "unicode-segmentation",
+ "warbler_grass",
+ "wasm-bindgen",
+ "winit",
 ]
 
 [[package]]

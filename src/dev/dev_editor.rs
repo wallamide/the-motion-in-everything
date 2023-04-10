@@ -35,7 +35,7 @@ pub struct DevEditorWindow;
 
 impl EditorWindow for DevEditorWindow {
     type State = DevEditorState;
-    const NAME: &'static str = "Foxtrot Dev";
+    const NAME: &'static str = "the motion in everything Dev";
     const DEFAULT_SIZE: (f32, f32) = (200., 150.);
     fn ui(
         world: &mut World,

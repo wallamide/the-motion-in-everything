@@ -40,6 +40,7 @@ pub struct AudioAssets {
     pub walking: Handle<AudioSource>,
 }
 
+// ToDo: update player character
 #[derive(AssetCollection, Resource, Clone)]
 pub struct SceneAssets {
     #[asset(path = "scenes/Fox.glb#Scene0")]
@@ -48,6 +49,7 @@ pub struct SceneAssets {
     pub level: Handle<Scene>,
 }
 
+// ToDo: update player character
 #[derive(AssetCollection, Resource, Clone)]
 pub struct AnimationAssets {
     #[asset(path = "scenes/Fox.glb#Animation0")]
@@ -58,6 +60,7 @@ pub struct AnimationAssets {
     pub character_running: Handle<AnimationClip>,
 }
 
+// ToDo: update game world
 #[derive(AssetCollection, Resource, Clone)]
 pub struct LevelAssets {
     #[cfg_attr(feature = "native", asset(path = "levels", collection(typed, mapped)))]
