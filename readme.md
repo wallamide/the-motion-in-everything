@@ -1,1 +1,7 @@
-Untitled wetland protection game for the [Save our Earth jam](https://itch.io/jam/save-our-earth-jam).  
+# the motion in everything
+
+> _discover how the world moves in order to guide the motion._
+
+the motion in everything is about learning to work with the world around you to create your future.
+
+entry for the [Fantasy & Supernatural Game Jam](https://itch.io/jam/fantasy-supernatural-game-jam).
