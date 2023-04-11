@@ -16,7 +16,7 @@ use iyes_progress::{ProgressCounter, ProgressPlugin};
 
 pub fn loading_plugin(app: &mut App) {
     app.add_plugin(RonAssetPlugin::<SerializedLevel>::new(&["lvl.ron"]))
-        .add_plugin(RonAssetPlugin::<Dialog>::new(&["dlg.ron"]))
+        .add_plugin(YarnPlugin)
         .add_plugin(TomlAssetPlugin::<GameConfig>::new(&["game.toml"]))
         .add_plugin(ProgressPlugin::new(GameState::Loading).continue_to(GameState::Menu))
         .add_loading_state(LoadingState::new(GameState::Loading).continue_to_state(GameState::Menu))

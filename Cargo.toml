@@ -57,45 +57,46 @@ wasm_dev = ["wasm", "dev"]
 tracing = ["bevy/trace_chrome"]
 
 [dependencies]
+anyhow = "1"
 bevy = { version = "0.10", default-features = false }
-bevy_kira_audio = "0.15"
 bevy_asset_loader = { version = "0.16", features = ["progress_tracking"] }
 bevy_common_assets = { version = "0.6", features = ["ron", "toml"] }
+bevy_dolly = { git = "https://github.com/BlackPhlox/bevy_dolly", rev = "b2f5dc787664cb8c3d92f792cbd437886fc090c6" }
+bevy_editor_pls = { version = "0.3", optional = true }
 bevy_egui = "0.20"
-serde = { version = "1", features = ["derive"] }
-indexmap = { version = "1", features = ["serde-1"] }
-strum = "0.24"
-strum_macros = "0.24"
-ron = "0.8"
-regex = "1"
-chrono = "0.4"
-glob = "0.3"
-oxidized_navigation = "0.3"
-bitflags = "2"
-iyes_progress = "0.8"
-unicode-segmentation = "1"
 bevy_hanabi = { version = "0.6", optional = true }
-anyhow = "1"
+bevy_kira_audio = "0.15"
+bevy_mod_sysfail = "2"
+bevy_prototype_debug_lines = { version = "0.10", optional = true, features = [
+    "3d",
+] }
 bevy_rapier3d = { version = "0.21", features = [
     "serde-serialize",
     "simd-nightly",
 ] }
+bitflags = "2"
+chrono = "0.4"
+glob = "0.3"
+indexmap = { version = "1", features = ["serde-1"] }
+iyes_progress = "0.8"
 leafwing-input-manager = { version = "0.9", features = ["egui"] }
-bevy_editor_pls = { version = "0.3", optional = true }
-bevy_prototype_debug_lines = { version = "0.10", optional = true, features = [
-    "3d",
-] }
-wasm-bindgen = { version = "0.2", optional = true }
-warbler_grass = "0.3"
+oxidized_navigation = "0.3"
 rand = { version = "0.8", features = ["small_rng", "nightly"] }
-bevy_dolly = { git = "https://github.com/BlackPhlox/bevy_dolly", rev = "b2f5dc787664cb8c3d92f792cbd437886fc090c6" }
-spew = "0.2.1"
-bevy_mod_sysfail = "2"
+regex = "1"
+ron = "0.8"
 seldom_fn_plugin = "0.3"
+serde = { version = "1", features = ["derive"] }
+spew = "0.2.1"
+strum = "0.24"
+strum_macros = "0.24"
+unicode-segmentation = "1"
+warbler_grass = "0.3"
+wasm-bindgen = { version = "0.2", optional = true }
+yarn-spinner = { git = "https://github.com/sanbox-irl/yarn-spinner", rev = "d7d12ed0c92cf5e5995bb13aadb22d568c85022d" }
 
 # keep the following in sync with Bevy's dependencies
-winit = { version = "0.28", default-features = false }
 image = { version = "0.24", default-features = false }
+winit = { version = "0.28", default-features = false }
 
 [build-dependencies]
 embed-resource = "1.4"

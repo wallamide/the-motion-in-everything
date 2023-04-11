@@ -1,0 +1,48 @@
+title: Start
+tags: alor
+---
+// variables
+
+<<declare $trust = 0 as number>>
+<<declare $offense = 0 as number>>
+<<declare $entertained = 0 as number>>
+<<declare $humorous = 0 as number>>
+<<declare $concern = 0 as number>>
+<<declare $confusion = 0 as number>>
+<<set $trust to 0>>
+<<set $offense to 0>>
+<<set $entertained to 0>>
+<<set $humorous to 0>>
+<<set $concern to 0>>
+<<set $confusion to 0>>
+
+// Start
+Alor: Is there something you need? 
+-> Who are you?
+<<set $concern to $concern + 1>>
+<<jump About>>
+
+-> Give me all your money! 
+<<set $confusion to $confusion + 1>>
+alor: All of my what?
+<<jump Mugging>>
+
+
+===
+title: About
+---
+Alor: Not getting enough sleep again?
+-> How could you tell?
+<<set $concern to $concern - 1>>
+
+-> So who are you?
+<<set $concern to $concern + 1>>
+
+-> Are you always this cryptic?
+<<set $concern to $concern - 1>>
+<<set $humorous to $humorous + 1>>
+===
+title: Mugging
+---
+
+===
