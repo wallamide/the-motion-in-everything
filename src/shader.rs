@@ -2,29 +2,54 @@
 use crate::file_system_interaction::asset_loading::TextureAssets;
 use crate::GameState;
 use anyhow::{Context, Result};
-use bevy::asset::HandleId;
-use bevy::pbr::{MaterialPipeline, MaterialPipelineKey};
-use bevy::prelude::*;
-use bevy::reflect::TypeUuid;
-use bevy::render::mesh::MeshVertexBufferLayout;
-use bevy::render::render_resource::Face::Front;
-use bevy::render::render_resource::{
-    AsBindGroup, RenderPipelineDescriptor, ShaderRef, ShaderType, SpecializedMeshPipelineError,
+use bevy::{
+    prelude::*,
+    asset::HandleId,
+    pbr::{MaterialPipeline, MaterialPipelineKey},
+    reflect::TypeUuid,
+    render::{
+        extract_resource::{ExtractResourcePlugin, ExtractResource},
+        mesh::MeshVertexBufferLayout,
+        render_asset::RenderAssets,
+        render_resource::{
+            AsBindGroup, RenderPipelineDescriptor, Face::Front, ShaderRef, ShaderType, SpecializedMeshPipelineError, TextureDimension, TextureFormat, Extent3d, TextureUsages, BindGroup, BindGroupLayout, CachedComputePipelineId, BindGroupLayoutDescriptor, BindGroupLayoutEntry, ShaderStages, StorageTextureAccess, PipelineCache, BindingType, TextureViewDimension, ComputePipelineDescriptor, BindGroupEntry, BindingResource, BindGroupDescriptor,
+        },
+        renderer::RenderDevice,
+        Render, RenderApp, RenderSet, render_graph::RenderGraph,
+    },
+    sprite::Material2d,
+    utils::HashMap,
 };
-use bevy::utils::HashMap;
 use bevy_mod_sysfail::macros::*;
+use bevy_rapier3d::pipeline;
 use regex::Regex;
+use std::borrow::Cow;
 use std::sync::LazyLock;
+
+pub struct ShaderPlugin;
 
 /// Handles instantiation of shaders. The shaders can be found in the [`shaders`](https://github.com/janhohenheim/foxtrot/tree/main/assets/shaders) directory.
 /// Shaders are stored in [`Material`]s which can be used on objects by attaching a `Handle<Material>` to an entity.
 /// The handles can be stored and retrieved in the [`Materials`] resource.
-pub fn shader_plugin(app: &mut App) {
-    app.add_plugin(MaterialPlugin::<GlowyMaterial>::default())
+impl Plugin for ShaderPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_plugin(MaterialPlugin::<GlowyMaterial>::default())
         .add_plugin(MaterialPlugin::<RepeatedMaterial>::default())
         .add_plugin(MaterialPlugin::<SkydomeMaterial>::default())
+        .add_plugin(ExtractResourcePlugin::<KuwaharaImage>::default()) // ToDO: change to compute shader
         .add_system(setup_shader.in_schedule(OnExit(GameState::Loading)))
-        .add_system(set_texture_to_repeat.in_set(OnUpdate(GameState::Playing)));
+        .add_system(set_texture_to_repeat.in_set(OnUpdate(GameState::Playing)))
+        .sub_app_mut(RenderApp)
+            .init_resource::<KuwaharaPipeline>()
+            .add_systems(Render, queue_bind_group.in_set(RenderSet::Queue));
+
+        let mut render_graph = app.world.resource_mut::<RenderGraph>();
+        render_graph.add_node("kuwahara_filter", KuwaharaNode::default());
+        render_graph.add_node_edge(
+            "kuwahara_filter",
+            bevy::render::main_graph::node::CAMERA_DRIVER, 
+        );
+    }
 }
 
 #[derive(Resource, Debug, Clone)]
@@ -33,13 +58,19 @@ pub struct Materials {
     /// (Texture asset ID, Repeats) -> RepeatedMaterial
     pub repeated: HashMap<(HandleId, Repeats), Handle<RepeatedMaterial>>,
     pub skydome: Handle<SkydomeMaterial>,
+    // pub kuwahara: Handle<KuwaharaMaterial>,
 }
+
+const SIZE: (u32, u32) = (1280,720);
+const WORKGROUP_SIZE: u32 = 8;
 
 fn setup_shader(
     mut commands: Commands,
     mut glow_materials: ResMut<Assets<GlowyMaterial>>,
     mut skydome_materials: ResMut<Assets<SkydomeMaterial>>,
+    // mut kuwahara_materials: ResMut<Assets<KuwaharaMaterial>>,
     texture_assets: Res<TextureAssets>,
+    mut images: ResMut<Assets<Image>>,
 ) {
     let glowy = glow_materials.add(GlowyMaterial {
         env_texture: texture_assets.glowy_interior.clone(),
@@ -48,10 +79,39 @@ fn setup_shader(
         env_texture: texture_assets.sky.clone(),
     });
 
+    // Taken from bevy compute_shader_game_of_life example.
+
+    let mut image = Image::new_fill(
+        Extent3d {
+            width: SIZE.0,
+            height: SIZE.1,
+            depth_or_array_layers: 1,
+        },
+        TextureDimension::D2,
+        &[0, 0, 0, 255],
+        TextureFormat::Rgba8Unorm,
+    );
+    image.texture_descriptor.usage =
+        TextureUsages::COPY_DST | TextureUsages::STORAGE_BINDING | TextureUsages::TEXTURE_BINDING;
+    let image = images.add(image);
+
+    commands.spawn(SpriteBundle {
+        sprite: Sprite { 
+            custom_size: Some(Vec2::new(SIZE.0 as f32, SIZE.1 as f32)),
+            ..default()
+        },
+        texture: image.clone(),
+        ..default()
+    });
+    commands.spawn(Camera2dBundle::default());
+
+    commands.insert_resource(KuwaharaImage(image));
+
     commands.insert_resource(Materials {
         repeated: HashMap::new(),
         glowy,
         skydome,
+        // kuwahara,
     });
 }
 
@@ -94,6 +154,92 @@ impl Material for SkydomeMaterial {
         Ok(())
     }
 }
+
+#[derive(Resource, Clone, Deref, ExtractResource)]
+// Material for the kuwahara filter
+struct KuwaharaImage (
+    // #[texture(0)]
+    // #[sampler(1)]
+    Handle<Image>
+);
+
+#[derive(Resource)]
+struct KuwaharaImageBindGroup(BindGroup);
+
+fn queue_bind_group(
+    mut commands: Commands,
+    pipeline: Res<KuwaharaPipeline>,
+    gpu_images: Res<RenderAssets<Image>>,
+    kuwahara_image: Res<KuwaharaImage>,
+    render_device: Res<RenderDevice>,
+){
+    let view = &gpu_images[&kuwahara_image.0];
+    let bind_group = render_device.create_bind_group(&BindGroupDescriptor {
+        label: None,
+        layout: &pipeline.texture_bind_group_layout,
+        entries: &[BindGroupEntry {
+            binding: 0,
+            resource: BindingResource::TextureView(&view.texture_view),
+        }],
+    });
+    commands.insert_resource(KuwaharaImageBindGroup(bind_group));
+}
+
+#[derive(Resource)]
+pub struct KuwaharaPipeline {
+    texture_bind_group_layout: BindGroupLayout,
+    init_pipeline: CachedComputePipelineId,
+    update_pipeline: CachedComputePipelineId,
+}
+
+impl FromWorld for KuwaharaPipeline {
+    fn from_world(world: &mut World) -> Self {
+        let texture_bind_group_layout =
+            world
+            .resource::<RenderDevice>()
+            .create_bind_group_layout(&BindGroupLayoutDescriptor {
+                label: None,
+                entries: &[BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: ShaderStages::COMPUTE,
+                    ty: BindingType::StorageTexture {
+                        access: StorageTextureAccess::ReadWrite,
+                        format: TextureFormat::Rgba8Unorm,
+                        view_dimension: TextureViewDimension::D2,
+                    },
+                    count: None,
+                }],
+            });
+        let shader = world
+                .resource::<AssetServer>()
+                .load("shaders/kuwahara_filter_compute.wgsl");
+        let pipeline_cache = world.resource::<PipelineCache>();
+        let init_pipeline = pipeline_cache.queue_compute_pipeline(ComputePipelineDescriptor{
+            label: None,
+            layout: vec![texture_bind_group_layout.clone()],
+            push_constant_ranges: Vec::new(),
+            shader: shader.clone(),
+            shader_defs: vec![],
+            entry_point: Cow::from("init"),
+        });
+        let update_pipeline = pipeline_cache.queue_compute_pipeline(ComputePipelineDescriptor {
+            label: None,
+            layout: vec![texture_bind_group_layout.clone()],
+            push_constant_ranges: Vec::new(),
+            shader,
+            shader_defs: vec![],
+            entry_point: Cow::from("update"),
+        });
+
+        KuwaharaPipeline {
+            texture_bind_group_layout,
+            init_pipeline,
+            update_pipeline,
+        }
+    }
+}
+
+struct KuwaharaNode;
 
 #[repr(C, align(16))] // All WebGPU uniforms must be aligned to 16 bytes
 #[derive(Clone, Copy, ShaderType, Debug, Hash, Eq, PartialEq, Default)]
