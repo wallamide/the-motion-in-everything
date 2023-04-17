@@ -25,6 +25,7 @@ pub fn loading_plugin(app: &mut App) {
         .add_collection_to_loading_state::<_, AnimationAssets>(GameState::Loading)
         .add_collection_to_loading_state::<_, LevelAssets>(GameState::Loading)
         .add_collection_to_loading_state::<_, DialogAssets>(GameState::Loading)
+        .add_collection_to_loading_state::<_, FontAssets>(GameState::Loading)
         .add_collection_to_loading_state::<_, TextureAssets>(GameState::Loading)
         .add_collection_to_loading_state::<_, ConfigAssets>(GameState::Loading)
         .add_system(show_progress.in_set(OnUpdate(GameState::Loading)))
@@ -81,6 +82,15 @@ pub struct DialogAssets {
     pub dialogs: HashMap<String, Handle<Dialog>>,
 }
 
+// ToDo: choose fonts
+#[derive(AssetCollection, Resource, Clone)]
+pub struct FontAssets {
+    #[asset(path = "fonts/caprice.ttf")]
+    pub caprice: Handle<Font>,
+    #[asset(path = "fonts/grasshopper.ttf")]
+    pub grasshopper: Handle<Font>,
+}
+
 #[derive(AssetCollection, Resource, Clone)]
 pub struct TextureAssets {
     #[asset(path = "textures/stone_alley_2.jpg")]
@@ -104,6 +114,7 @@ fn show_progress(
     animation_assets: Option<Res<AnimationAssets>>,
     level_assets: Option<Res<LevelAssets>>,
     dialog_assets: Option<Res<DialogAssets>>,
+    font_assets: Option<Res<FontAssets>>,
     texture_assets: Option<Res<TextureAssets>>,
     config_assets: Option<Res<ConfigAssets>>,
 ) {
@@ -127,6 +138,7 @@ fn show_progress(
                     ui.checkbox(&mut animation_assets.is_some(), "Animations");
                     ui.checkbox(&mut level_assets.is_some(), "Levels");
                     ui.checkbox(&mut dialog_assets.is_some(), "Dialogs");
+                    ui.checkbox(&mut font_assets.is_some(), "Fonts");
                     ui.checkbox(&mut texture_assets.is_some(), "Textures");
                     ui.checkbox(&mut config_assets.is_some(), "Config");
                 });
