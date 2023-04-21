@@ -1,4 +1,4 @@
-use crate::{file_system_interaction::asset_loading::FontAssets, GameState};
+use crate::GameState;
 use bevy::prelude::*;
 
 #[derive(Component)]
@@ -10,7 +10,7 @@ struct PlayBtn;
 #[derive(Resource)]
 struct MainMenuColors {
     btn_bg_base: Color,
-    btn_bg_hovered: Color,
+    // btn_bg_hovered: Color,
     btn_txt: Color,
     menu_bg: Color,
     title_txt_color: Color,
@@ -20,7 +20,7 @@ impl Default for MainMenuColors {
     fn default() -> Self {
         MainMenuColors {
             btn_bg_base: Color::rgb(0.15, 0.15, 0.15),
-            btn_bg_hovered: Color::rgb(0.25, 0.25, 0.25),
+            // btn_bg_hovered: Color::rgb(0.25, 0.25, 0.25),
             btn_txt: Color::DARK_GREEN,
             menu_bg: Color::rgb(0.81, 0.12, 0.988),
             title_txt_color: Color::BLACK,
@@ -28,12 +28,25 @@ impl Default for MainMenuColors {
     }
 }
 
+// ToDo: choose fonts
+#[derive(Resource, Clone)]
+pub struct FontAssets {
+    pub caprice: Handle<Font>,
+    pub grasshopper: Handle<Font>,
+}
+
 /// This plugin is responsible for the game menu
 /// The menu is only drawn during the State `GameState::Menu` and is removed when that state is exited.
 pub fn menu_plugin(app: &mut App) {
-    app.add_system(setup_menu.in_schedule(OnEnter(GameState::Menu)))
-        // .add_system(button_actions.in_set(OnUpdate(GameState::Menu)))
-        .add_system(cleanup_menu.in_schedule(OnExit(GameState::Menu)));
+    let asset_server = app.world.get_resource::<AssetServer>().unwrap();
+
+    app.insert_resource(FontAssets {
+        caprice: asset_server.load("fonts/caprice.ttf"),
+        grasshopper: asset_server.load("fonts/grass"),
+    })
+    .add_system(setup_menu.in_schedule(OnEnter(GameState::Menu)))
+    // .add_system(button_actions.in_set(OnUpdate(GameState::Menu)))
+    .add_system(cleanup_menu.in_schedule(OnExit(GameState::Menu)));
 }
 
 // Modified from https://github.com/rparrett/undefended/blob/main/src/main_menu.rs
