@@ -52,6 +52,14 @@ enum GameState {
     Playing,
     /// Here the menu is drawn and waiting for player interaction
     Menu,
+    /// Draw menu to save game 
+    SaveGame, 
+    /// Draw a menu for loading saved games
+    LoadSaves,
+    /// Settings Menu
+    Settings,
+    /// Quit the game
+    Quit,
 }
 
 /// Main entrypoint for the motion in everything.
