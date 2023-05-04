@@ -128,7 +128,6 @@ fn show_progress(
                     ui.checkbox(&mut animation_assets.is_some(), "Animations");
                     ui.checkbox(&mut level_assets.is_some(), "Levels");
                     ui.checkbox(&mut dialog_assets.is_some(), "Dialogs");
-                    // ui.checkbox(&mut font_assets.is_some(), "Fonts");
                     ui.checkbox(&mut texture_assets.is_some(), "Textures");
                     ui.checkbox(&mut config_assets.is_some(), "Config");
                 });

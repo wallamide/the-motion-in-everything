@@ -76,6 +76,7 @@ fn setup_menu(mut commands: Commands, fonts: Res<FontAssets>, colors: Res<MainMe
         margin: UiRect::all(Val::Auto),
         size: Size::all(Val::Percent(100.0)),
         flex_direction: FlexDirection::Column,
+        align_content: AlignContent::SpaceBetween,
         padding: UiRect::all(Val::Percent(5.0)),
         ..default()
     };
@@ -90,11 +91,11 @@ fn setup_menu(mut commands: Commands, fonts: Res<FontAssets>, colors: Res<MainMe
     };
 
     let link_container_style = Style {
-        size: Size::new(Val::Px(200.0), Val::Percent(35.0)),
+        size: Size::new(Val::Percent(25.0), Val::Percent(10.0)),
         flex_direction: FlexDirection::Column,
         justify_content: JustifyContent::Center,
         align_self: AlignSelf::FlexEnd,
-        position: UiRect::bottom(Val::Percent(25.0)),
+        // position: UiRect::bottom(Val::Percent(10.0)),
         ..default()
     };
 
