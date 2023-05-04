@@ -95,7 +95,7 @@ fn setup_menu(mut commands: Commands, fonts: Res<FontAssets>, colors: Res<MainMe
         flex_direction: FlexDirection::Column,
         justify_content: JustifyContent::Center,
         align_self: AlignSelf::FlexEnd,
-        position: UiRect::top(Val::Percent(35.0)),
+        position: UiRect::top(Val::Percent(30.0)),
         ..default()
     };
 
