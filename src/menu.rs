@@ -91,11 +91,11 @@ fn setup_menu(mut commands: Commands, fonts: Res<FontAssets>, colors: Res<MainMe
     };
 
     let link_container_style = Style {
-        size: Size::new(Val::Percent(25.0), Val::Percent(10.0)),
+        size: Size::new(Val::Percent(20.0), Val::Percent(15.0)),
         flex_direction: FlexDirection::Column,
         justify_content: JustifyContent::Center,
         align_self: AlignSelf::FlexEnd,
-        // position: UiRect::bottom(Val::Percent(10.0)),
+        position: UiRect::top(Val::Percent(35.0)),
         ..default()
     };
 
@@ -221,6 +221,7 @@ fn setup_menu(mut commands: Commands, fonts: Res<FontAssets>, colors: Res<MainMe
         })
         .id();
 
+    // Container for social media/steam links
     let link_container = commands
         .spawn((
             NodeBundle{
